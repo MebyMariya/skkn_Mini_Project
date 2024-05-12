@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
-//import 'package:skkn/combine.dart';
-import 'signup.dart';
-import 'second.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Navigation Example',
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(), // Changed to LoginPage as the initial route
-    );
-  }
-}
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:skkn/second.dart';
+import 'package:skkn/signup.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void _login(BuildContext context) {
-    // Check if email and password match
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-
-    // Sample validation - replace with your actual validation logic
-    if (email == 'user@example.com' && password == 'password') {
-      // Navigate to MainPage if login is successful
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+  void _login(BuildContext context) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
-    } else {
+
+      // Navigate to HomePage if login is successful
+      if (userCredential.user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+    } catch (e) {
       // Show an alert or snackbar for invalid credentials
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
