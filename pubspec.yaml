@@ -38,7 +38,7 @@ dependencies:
   video_player: ^2.3.8
   chewie: ^1.2.2
   firebase_core: ^2.31.0
-  firebase_auth: ^4.11.0
+  firebase_auth: ^4.19.5
   cloud_firestore: ^4.3.0
   getwidget: ^4.0.0
   csv: ^6.0.0

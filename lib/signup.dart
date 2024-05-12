@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:skkn/login.dart'; // Import your login page widget
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -26,28 +28,42 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  void _signUp() {
-    // Handle sign-up logic here
+  void _signUp() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    // After successful sign-up, navigate back to login page
-    Navigator.pop(context);
+      // After successful sign-up, navigate to the login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print('Error signing up: $e');
+      // Handle sign-up errors here (e.g., show a snackbar with error message)
+      // For example:
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //   content: Text('Error signing up. Please try again.'),
+      // ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/4.jpg'),
-            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/4.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-          child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: 20),
                 Row(
                   children: [
-                      Text('Date of Birth: '),
+                    Text('Date of Birth: '),
                     TextButton(
                       onPressed: () => _selectDate(context),
                       child: Text(_selectedDate?.formatted() ?? 'Select Date'), // Use formatted method
