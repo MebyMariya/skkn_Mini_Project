@@ -4,10 +4,10 @@ import 'intermediate.dart'; // Import the IntermediatePage class
 import 'advanced.dart'; // Import the AdvancedPage class
 
 void main() {
-  runApp(MyApp());
+  runApp(ans());
 }
 
-class MyApp extends StatelessWidget {
+class ans extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

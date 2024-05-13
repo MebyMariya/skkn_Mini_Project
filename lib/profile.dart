@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
 import 'wishlistpage.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Disable debug banner
-      home: ProfilePage(),
-    );
-  }
-}
-
 class ProfilePage extends StatefulWidget {
+  final String name;
+  final String email;
+  final String location;
+
+  const ProfilePage({Key? key, required this.name, required this.email, required this.location}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // Sample user data
-  final String name = 'John Doe';
-  final String email = 'johndoe@example.com';
-  final String location = 'New York, USA';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,28 +40,26 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      widget.name,
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      email,
+                      widget.email,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
                       ),
                     ),
-                    location != null
-                        ? Text(
-                            location,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.grey,
-                            ),
-                          )
-                        : SizedBox(),
+                    Text(
+                      widget.location,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ],

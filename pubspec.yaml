@@ -46,6 +46,10 @@ dependencies:
   flutter_svg: ^2.0.10+1
   provider: ^6.1.2
   wakelock: ^0.6.2
+  flutter_upi_india: ^0.0.1
+  table_calendar: ^3.0.6
+  
+
   
 
  
@@ -101,6 +105,7 @@ flutter:
     - assets/images/sensitve.jpg
     - assets/images/oily.jpg
     - assets/images/beginner.jpg
+    - assets/images/pay.jpg
     - assets/data.txt
     - assets/images/profile_background.jpg
     - android/app/src/main/res/drawable/launch_background.xml

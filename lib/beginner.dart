@@ -64,8 +64,8 @@ class _BeginnerPageState extends State<BeginnerPage> {
   List<Product> getProductsWithPriceForType(String productType) {
     List<Product> products = [];
     for (var row in csvData) {
-      if (row.length >= 7 && row[6] == productType) { // Assuming product_type is in the 7th column
-        products.add(Product(name: row[1], price: row[5])); // Assuming product name is in the 2nd column and price in the 6th column
+      if (row.length >= 7 && row[6] == productType) {
+        products.add(Product(name: row[1], price: row[5], image: row[6],)); 
       }
     }
     return products;
@@ -81,7 +81,7 @@ class _BeginnerPageState extends State<BeginnerPage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/beginner.jpg'), // Your background image
+              image: AssetImage('assets/images/beginner.jpg'),
               fit: BoxFit.fill,
             ),
           ),
@@ -119,9 +119,7 @@ class HeadingWithBox extends StatelessWidget {
   final List<Product>? products;
 
   const HeadingWithBox({Key? key, required this.title, this.products})
-      : super(key: key);
-
-  @override
+      : super(key: key);@override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -135,29 +133,44 @@ class HeadingWithBox extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Container(
-          width: 300, // Take full available width
-          height: 160, // Reduced height
+          width: 300,
+          height: 160,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 223, 190, 147), // Brown color
+            color: Color.fromARGB(255, 223, 190, 147),
             borderRadius: BorderRadius.circular(10),
           ),
           padding: EdgeInsets.all(20),
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal, // Horizontal scrolling
+            scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                SizedBox(width: 10), // Left padding for better appearance
+                SizedBox(width: 10),
                 if (products != null && products!.isNotEmpty)
                   for (Product product in products!)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    GestureDetector(
+                      onTap: () {
+                        // Handle tapping on the product (e.g., navigate to product details page)
+                      },
                       child: Column(
                         children: [
+                          Image.asset(
+                            'assets/images/${product.image}', // Assuming images are in the assets/images folder
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                           Text(product.name),
-                          Text('\$${product.price}'), // Displaying price
+                          Text(product.price),
+                          IconButton(
+                            onPressed: () {
+                              // Handle adding/removing from wishlist
+                            },
+                            icon: Icon(Icons.favorite_border),
+                          ),
                         ],
                       ),
                     ),
+
                 if (products == null || products!.isEmpty)
                   Center(
                     child: Text('No data available'),
@@ -175,6 +188,8 @@ class HeadingWithBox extends StatelessWidget {
 class Product {
   final String name;
   final String price;
+  final String image;
+  bool isWishlisted; // Added isWishlisted property
 
-  Product({required this.name, required this.price});
+  Product({required this.name, required this.price, required this.image,this.isWishlisted = false});
 }

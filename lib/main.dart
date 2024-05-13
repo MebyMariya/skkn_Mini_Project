@@ -81,7 +81,7 @@ class SecondPage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Color.fromARGB(255, 255,255,255),
                     textStyle: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

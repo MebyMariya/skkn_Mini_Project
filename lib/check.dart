@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // Import image_picker package
 //import 'dart:io'; // Import dart:io for XFile
 import 'otherways.dart';
+// ignore: unused_import
 import 'second.dart';
 
 void main() => runApp(MyApps());
 
 class MyApps extends StatefulWidget {
   @override
-  AppState createState() => AppState();
+  AppStates createState() => AppStates();
 }
 
-class AppState extends State<MyApps> {
+class AppStates extends State<MyApps> {
   String answer1 = '';
   String answer2 = '';
   String answer3 = '';
@@ -19,6 +20,7 @@ class AppState extends State<MyApps> {
   String answer5 = '';
   String answer6 = '';
   TextEditingController concernsController = TextEditingController();
+  // ignore: unused_field
   final ImagePicker _picker = ImagePicker(); // Instance of ImagePicker
 
   @override

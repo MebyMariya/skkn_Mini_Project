@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:skkn/second.dart';
+import 'package:skkn/threeoption.dart';
 import 'second.dart'; // Import the next page file
+import 'threeoption.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -89,7 +91,7 @@ class _HomePageState extends State<HomeAnsPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage()), // Navigate to the next page
+                          MaterialPageRoute(builder: (context) => ans()), // Navigate to the next page
                         );
                       },
                       child: Text('Next Page'),
