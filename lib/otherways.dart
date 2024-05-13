@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:image_picker/image_picker.dart';
-import 'type.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart'; 
 
 void main() {
   runApp(MaterialApp(
-
     debugShowCheckedModeBanner: false, // Remove debug banner
     home: HomePageButton(),
   ));
@@ -14,9 +14,29 @@ void main() {
 class HomePageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<void> sendImageForClassification(File imageFile) async {
+      final url = Uri.parse('http://your_server_ip:5000/classify_image');
+      var request = http.MultipartRequest('POST', url);
+      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+      try {
+        var response = await request.send();
+        if (response.statusCode == 200) {
+          var jsonResponse = await response.stream.bytesToString();
+          Map<String, dynamic> responseData = jsonDecode(jsonResponse);
+          String predictedSkinType = responseData['predicted_skin_type'];
+          print('Predicted Skin Type: $predictedSkinType');
+          // You can further process the predicted skin type here
+        } else {
+          print('Failed to classify image: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: Stack(
         children: [
           Container(
@@ -30,38 +50,17 @@ class HomePageButton extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Handle camera button press
-                          print('Camera button pressed');
-                        },
-                        icon: Icon(Icons.camera_alt),
-                        label: Text('Camera'),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Handle upload button press
-                          print('Upload button pressed');
-                        },
-                        icon: Icon(Icons.upload_file),
-                        label: Text('Upload'),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeAnsPage()),
-          );
-                      // Handle submit button press
-                      print('Submit button pressed');
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      // Handle camera button press
+                      final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        File imageFile = File(image.path);
+                        sendImageForClassification(imageFile);
+                      }
                     },
-                    child: Text('Submit'),
+                    icon: Icon(Icons.camera_alt),
+                    label: Text('Camera'),
                   ),
                 ],
               ),

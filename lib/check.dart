@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // Import image_picker package
-//import 'dart:io'; // Import dart:io for XFile
-import 'otherways.dart';
-// ignore: unused_import
-import 'second.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'type.dart';
 
 void main() => runApp(MyApps());
 
@@ -20,8 +18,33 @@ class AppStates extends State<MyApps> {
   String answer5 = '';
   String answer6 = '';
   TextEditingController concernsController = TextEditingController();
-  // ignore: unused_field
-  final ImagePicker _picker = ImagePicker(); // Instance of ImagePicker
+
+  Future<void> checkSkinType(Map<String, String> selectedOptions) async {
+    final url = Uri.parse('http://127.0.0.1:5000/check_skin_type');
+    String jsonBody = json.encode(selectedOptions);
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = json.decode(response.body);
+        String matchedSkinType = responseData['matched_skin_type'];
+        print('Match found! Skin type: $matchedSkinType');
+        // You can further process the matched skin type here
+      } else {
+        print('Failed to check skin type: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +402,7 @@ class AppStates extends State<MyApps> {
           // If not on the stack, push a new instance of OtherWays
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomePageButton()),
+            MaterialPageRoute(builder: (context) => HomeAnsPage()),
           );
         }
       },

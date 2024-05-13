@@ -8,6 +8,7 @@ class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // Method to handle the login process
   void _login(BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -15,18 +16,35 @@ class LoginPage extends StatelessWidget {
         password: passwordController.text.trim(),
       );
 
-      // Navigate to HomePage if login is successful
+      // Debugging statement
+      print('UserCredential: $userCredential');
+
+      // Check if userCredential.user is not null, indicating successful login
       if (userCredential.user != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MyApps()),
+          MaterialPageRoute(builder: (context) => MyApps()), // Replace MyApps with the appropriate widget for your next page
+        );
+      } else {
+        // Show an alert or snackbar for unsuccessful login
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid email or password'),
+          ),
         );
       }
     } catch (e) {
-      // Show an alert or snackbar for invalid credentials
+      // Print the error for debugging
+      print('Error occurred: $e');
+
+      String errorMessage = 'An error occurred. Please try again later.';
+      if (e is FirebaseAuthException) {
+        errorMessage = e.message ?? 'An error occurred. Please try again later.';
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Invalid email or password'),
+          content: Text(errorMessage),
         ),
       );
     }
@@ -108,10 +126,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyApps()),
-                        );
+                        _login(context); // Call the _login method when the Login button is pressed
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
