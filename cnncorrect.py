@@ -3,8 +3,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.applications import VGG16
 from tensorflow.keras.layers import Flatten, Dense
-from PIL import Image
-import io
 
 # Define target image dimensions
 target_width, target_height = 224, 224
@@ -14,10 +12,17 @@ use_face_detection = True  # Set to True if you want to use face detection
 skin_types = ['Normal', 'Oily', 'Dry']
 num_classes = len(skin_types)
 
-# Define face detection function (optional)
+# Define face detection function
 def detect_face(image):
     # Your face detection logic here
-    pass
+    # For example, using OpenCV's Haar cascades
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+    if len(faces) == 0:
+        return None
+    else:
+        return faces[0]
 
 # Define image preprocessing function
 def preprocess_image(image):
@@ -65,8 +70,14 @@ else:
     exit()
 
 if use_face_detection:
-    # Apply face detection here if needed
-    pass
+    # Apply face detection
+    face_rect = detect_face(frame)
+    if face_rect is None:
+        print("No face detected.")
+        exit()
+    else:
+        x, y, w, h = face_rect
+        face_img = frame[y:y+h, x:x+w]
 
 # Preprocess the image
 preprocessed_image = preprocess_image(frame)
@@ -76,6 +87,9 @@ preprocessed_image = np.expand_dims(preprocessed_image, axis=0)
 prediction = model.predict(preprocessed_image)[0]
 predicted_class_index = np.argmax(prediction)
 predicted_skin_type = skin_types[predicted_class_index]
+
+with open('predicted_skin_type.txt', 'w') as file:
+    file.write(predicted_skin_type)
 
 # Display the image with predicted skin type
 cv2.putText(frame, f"Skin Type: {predicted_skin_type}", (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
