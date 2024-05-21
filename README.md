@@ -7,7 +7,7 @@ The platform simplifies managing routines and product inventory, tracking progre
 
 
 OUTPUT
+![outputskin](https://github.com/MebyMariya/skkn_miniproject/assets/133742607/885b74e6-ebf8-4013-a778-f1129ba16e5a)
 
-![result](https://github.com/MebyMariya/skkn_miniproject/assets/133742607/fed1e8a7-7f29-47c9-a0e4-a5e645894a9c)
-![camera test](https://github.com/MebyMariya/skkn_miniproject/assets/133742607/bbfc0dd1-5436-42bd-a4fe-d5b416f5be92)
+
 
