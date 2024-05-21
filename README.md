@@ -1,4 +1,4 @@
-# skkn
+# SKKN - A Skincare Recommendation System
 The skincare industry is evolving with a focus on personalized solutions. The innovative Skin Care Recommendation System (SCRS) integrates skin type analysis, personalized routines, and expert insights.
 
 Using machine learning and user data, the SCRS offers tailored skincare routines for issues like acne, aging, sensitivity, and hyperpigmentation. Users input their skin type and concerns to receive customized regimens.
